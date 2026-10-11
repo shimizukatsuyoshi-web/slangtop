@@ -1,0 +1,757 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>スラング動画ノート</title>
+<meta name="description" content="動画で覚える英語スラングのノート（テスト版）">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3b2a85">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="スラング動画">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Zen+Maru+Gothic:wght@400;700&display=swap">
+<style>
+/* Layout: one phrase at a time — video stage on top, then the phrase, a two-person chat, and the word list; a Learn/Quiz switch above */
+:root{
+  --bg:#f6f4fb; --surface:#ffffff; --ink:#1f1838; --muted:#686180; --line:#e2ddef;
+  --accent:#e2405f; --on-accent:#ffffff; --violet:#3b2a85; --stage:#241a52; --stage-ink:#efeaff;
+  --hl:#ffe27a; --hl-ink:#1f1838; --bub-a:#eeeaf9; --bub-b:#ffe5eb; --ok:#1b8455; --ng:#cc3434;
+  --en:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --ja:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14111d; --surface:#1e192c; --ink:#ece8f6; --muted:#a39bbc; --line:#332c48;
+  --accent:#ff6f8c; --on-accent:#1e0a12; --violet:#b9abff; --stage:#0d0a18; --stage-ink:#e6e0ff;
+  --hl:#6a5414; --hl-ink:#fff4c9; --bub-a:#2a2440; --bub-b:#3b2131; --ok:#4cc38a; --ng:#ff7d7d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14111d; --surface:#1e192c; --ink:#ece8f6; --muted:#a39bbc; --line:#332c48;
+  --accent:#ff6f8c; --on-accent:#1e0a12; --violet:#b9abff; --stage:#0d0a18; --stage-ink:#e6e0ff;
+  --hl:#6a5414; --hl-ink:#fff4c9; --bub-a:#2a2440; --bub-b:#3b2131; --ok:#4cc38a; --ng:#ff7d7d; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--ja);font-size:15px;line-height:1.75}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:24px 56px;display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
+.brand h1{font-family:var(--en);font-weight:800;font-size:1.9rem;line-height:1.1;margin:0;letter-spacing:-.01em}
+.brand h1 span{color:var(--accent)}
+.beta{font-family:var(--ja);font-style:normal;font-size:.8rem;font-weight:700;vertical-align:middle;border:1.5px solid var(--accent);color:var(--accent);border-radius:999px;padding:1px 10px;margin-left:6px;letter-spacing:0}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:.88rem}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 18px;cursor:pointer;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--violet);color:var(--surface)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:var(--en);font-weight:500}
+.chip i{font-style:normal;font-size:.72rem;font-weight:700;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--bub-a);color:var(--violet);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.chip[aria-pressed="true"] i{background:var(--accent);color:var(--on-accent)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.stage{position:relative;background:var(--stage);color:var(--stage-ink);aspect-ratio:16/9;max-width:100%;display:grid}
+.stage video{width:100%;height:100%;display:block;background:#000;object-fit:contain}
+.empty{padding:18px 20px;display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:0}
+.empty .lab{font-size:.72rem;letter-spacing:.12em;opacity:.75}
+.empty h3{margin:0;font-size:1.05rem}
+.script{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-family:var(--en);font-size:.95rem}
+.script b{display:inline-block;width:1.6em;color:var(--hl)}
+.pick{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:1px solid currentColor;border-radius:999px;padding:4px 14px;font-size:.85rem;cursor:pointer}
+.pick input{position:absolute;opacity:0;width:1px;height:1px}
+.note{font-size:.78rem;opacity:.8;margin:0}
+
+.body{padding:20px;display:flex;flex-direction:column;gap:18px}
+.tag{font-size:.72rem;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.phrase{display:flex;flex-direction:column;gap:2px}
+.phrase h2{font-family:var(--en);font-weight:800;font-size:clamp(2rem,7vw,2.8rem);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
+.phrase .mean{font-size:1.2rem;font-weight:700;color:var(--violet)}
+.phrase .scene{display:inline-block;margin-top:6px;font-size:.8rem;color:var(--accent);font-weight:700}
+.nuance{margin:0;color:var(--muted);max-width:62ch}
+
+.chat{display:flex;flex-direction:column;gap:12px}
+.line{display:flex;gap:10px;align-items:flex-start;max-width:92%}
+.line.b{flex-direction:row-reverse;align-self:flex-end}
+.who{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:var(--en);font-weight:700;font-size:.85rem;background:var(--violet);color:var(--surface)}
+.line.b .who{background:var(--accent);color:var(--on-accent)}
+.bub{background:var(--bub-a);border-radius:16px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.line.b .bub{background:var(--bub-b)}
+.en{font-family:var(--en);font-size:1.15rem;font-weight:500;line-height:1.55;margin:0}
+.w{background:none;border:0;padding:0 1px;cursor:pointer;border-radius:4px;border-bottom:2px dotted var(--violet)}
+.w.slang{font-weight:800;background:var(--hl);color:var(--hl-ink);border-bottom:0;padding:0 4px}
+.w.on{outline:2px solid var(--accent)}
+.ja{margin:0;font-size:.92rem;color:var(--muted);cursor:pointer}
+.ja.hide{filter:blur(5px);user-select:none}
+.jav{margin:0;font-size:.95rem;color:var(--ink)}
+.chat.solo .line{max-width:100%}
+.examples{display:flex;flex-direction:column;gap:10px}
+.ex{background:var(--bg);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:4px}
+.exw{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--muted)}
+.exw b{font-family:var(--en);color:var(--ink);margin-right:4px}
+.play{display:flex;gap:6px}
+.play button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:1px 10px;font-size:.78rem;cursor:pointer}
+.pop{min-height:3.2em;border-radius:12px;background:var(--bg);padding:10px 14px;font-size:.93rem;color:var(--muted)}
+.pop b{font-family:var(--en);color:var(--ink);font-size:1.02rem;margin-right:6px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:transparent;border-radius:10px;padding:5px 12px;font-size:.85rem;cursor:pointer}
+.btn.main{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700;padding:8px 18px}
+
+.words{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+td{padding:7px 6px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-family:var(--en);font-weight:700;white-space:nowrap}
+td.pos{color:var(--muted);font-size:.78rem;white-space:nowrap}
+.tip{background:var(--bub-a);border-radius:14px;padding:12px 16px}
+.tip p{margin:2px 0 0}
+.nav{display:flex;justify-content:space-between;gap:8px}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
+/* video management (writers only) */
+.admin{padding:14px 20px;border-bottom:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;gap:8px}
+label.btn{position:relative;cursor:pointer;display:inline-flex;align-items:center}
+label.btn input{position:absolute;opacity:0;width:1px;height:1px}
+.btn.danger{border-color:var(--ng);color:var(--ng);font-weight:700}
+.btn:disabled{opacity:.45;cursor:default}
+.status{margin:0;font-size:.82rem;color:var(--muted)}
+.help{margin:0;font-size:.85rem;background:var(--bub-a);border-radius:10px;padding:8px 12px}
+.timing{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.78rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+.timing b{color:var(--ink);font-variant-numeric:tabular-nums}
+.timing button{border:1px solid var(--violet);color:var(--violet);background:var(--surface);border-radius:999px;padding:0 10px;cursor:pointer}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;flex:1}
+.bar span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qtext{font-size:1.1rem;font-weight:700;margin:0}
+.qbig{font-family:var(--en);font-weight:800;font-size:2.2rem;line-height:1.1;margin:0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;text-align:left;cursor:pointer;min-width:0}
+.opt.en{font-family:var(--en);font-weight:700;font-size:1.05rem}
+.opt:hover:not(:disabled){border-color:var(--violet)}
+.opt.right{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok) inset}
+.opt.wrong{border-color:var(--ng);box-shadow:0 0 0 1px var(--ng) inset}
+.opt:disabled{cursor:default}
+.fb{border-radius:12px;padding:12px 16px;background:var(--bg)}
+.fb strong.ok{color:var(--ok)} .fb strong.ng{color:var(--ng)}
+.result{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.score{font-family:var(--en);font-weight:800;font-size:3.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.score small{font-size:1.2rem;color:var(--muted)}
+.miss{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;width:100%}
+.miss li{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:6px}
+.miss span{font-family:var(--en);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- top page ---------- */
+.top{position:relative;min-height:100svh;background:#120d26;color:#f4f0ff;overflow:hidden;display:flex;flex-direction:column}
+.top .bgv{position:absolute;top:0;left:0;width:100%;height:100svh;object-fit:cover;object-position:50% 30%;opacity:.55;filter:saturate(1.1)}
+.top::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(120% 80% at 85% 10%,rgba(226,64,95,.45),transparent 55%),
+  radial-gradient(90% 70% at 0% 100%,rgba(91,64,210,.6),transparent 60%),
+  linear-gradient(180deg,rgba(18,13,38,.35) 0%,rgba(18,13,38,.55) 45%,#120d26 100%);z-index:1}
+.top > *{position:relative;z-index:2}
+.tbar{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;max-width:1080px;width:100%;margin:0 auto;box-sizing:border-box}
+.tlogo{font-family:var(--en);font-weight:800;font-size:1.05rem;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.tlogo i{width:26px;height:26px;border-radius:8px;background:#e2405f;display:grid;place-items:center;font-style:normal;font-size:.7rem}
+.tpill{font-size:.72rem;font-weight:700;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 10px;letter-spacing:.08em}
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:24px 20px 40px;max-width:1080px;width:100%;margin:0 auto;box-sizing:border-box}
+.kicker{font-size:.78rem;font-weight:700;letter-spacing:.22em;color:#ffb3c2;text-transform:uppercase;font-family:var(--en)}
+.htitle{font-family:var(--en);font-weight:800;font-size:clamp(3rem,13vw,7.5rem);line-height:.9;letter-spacing:-.045em;margin:0}
+.htitle span{display:block}
+.htitle .c{color:transparent;background:linear-gradient(95deg,#ff5d7e,#ffd36e);-webkit-background-clip:text;background-clip:text}
+.hlead{font-size:clamp(1.05rem,3.6vw,1.35rem);font-weight:700;margin:0;max-width:30em;line-height:1.6}
+.hlead small{display:block;font-weight:400;font-size:.88em;color:#cfc6ec;margin-top:4px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.cta button{font:inherit;font-weight:700;border-radius:999px;padding:14px 28px;font-size:1.02rem;cursor:pointer;border:0;transition:transform .15s}
+.cta button:hover{transform:translateY(-2px)}
+.cta .go{background:#e2405f;color:#fff;box-shadow:0 10px 30px -8px rgba(226,64,95,.8)}
+.cta .ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(6px)}
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:6px}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--en);font-size:1.9rem;font-weight:800;line-height:1}
+.stats span{font-size:.75rem;color:#cfc6ec;margin-top:4px}
+.ticker{overflow:hidden;border-block:1px solid rgba(255,255,255,.14);background:rgba(18,13,38,.6);padding:14px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ticker .track{display:flex;gap:12px;width:max-content;animation:tick 38s linear infinite}
+.ticker:hover .track{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(-50%)}}
+.tk{flex:none;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:8px 16px 8px 8px;cursor:pointer;font:inherit}
+.tk i{font-style:normal;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;font-family:var(--en);font-size:.75rem;font-weight:700}
+.tk.v i{background:#e2405f}
+.tk b{font-family:var(--en);font-weight:700}
+.tk small{color:#cfc6ec;font-size:.78rem}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:34px 20px 44px;max-width:1080px;width:100%;margin:0 auto;box-sizing:border-box}
+@media (max-width:640px){.how{grid-template-columns:1fr}}
+.how div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px}
+.how em{font-style:normal;font-family:var(--en);font-weight:800;font-size:.8rem;color:#ff8aa2;letter-spacing:.16em}
+.how h3{margin:6px 0 4px;font-size:1.1rem}
+.how p{margin:0;font-size:.88rem;color:#cfc6ec}
+.tfoot{text-align:center;font-size:.75rem;color:#9d93c2;padding:0 20px 28px}
+.brand h1{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.ticker .track{animation:none;flex-wrap:wrap;width:auto;padding:0 16px}.top .bgv{display:none}}
+</style>
+
+<section class="top" id="top" aria-label="トップページ">
+  <video class="bgv" id="bgv" muted playsinline autoplay preload="auto" aria-hidden="true"></video>
+  <div class="tbar">
+    <div class="tlogo"><i>▶</i>Slang Clip Note</div>
+    <span class="tpill">BETA</span>
+  </div>
+  <div class="hero">
+    <span class="kicker">Real English, Real Clips</span>
+    <h1 class="htitle"><span>Slang</span><span class="c">Clip</span><span>Note.</span></h1>
+    <p class="hlead">教科書に載っていない、ネイティブのリアルな英語を。<small>短い動画で見て、単語をタップして、クイズで定着させる英語スラングノート。</small></p>
+    <div class="cta">
+      <button type="button" class="go" id="t-start">はじめる →</button>
+      <button type="button" class="ghost" id="t-quiz">クイズに挑戦</button>
+    </div>
+    <div class="stats">
+      <div><b id="t-np">10</b><span>スラング</span></div>
+      <div><b id="t-nv">4</b><span>動画クリップ</span></div>
+      <div><b>Free</b><span>無料・オフライン対応</span></div>
+    </div>
+  </div>
+  <div class="ticker" aria-label="収録フレーズ"><div class="track" id="t-track"></div></div>
+  <div class="how">
+    <div><em>01 / WATCH</em><h3>動画で見る</h3><p>ネイティブが実際に話す場面を、短い動画でチェック。1行ずつ、ゆっくり再生もできます。</p></div>
+    <div><em>02 / TAP</em><h3>タップで意味</h3><p>わからない単語はタップするだけ。日本語訳とニュアンスがすぐにわかります。</p></div>
+    <div><em>03 / QUIZ</em><h3>クイズで定着</h3><p>意味当てと穴埋めの4択クイズで、覚えたフレーズを確かめましょう。</p></div>
+  </div>
+  <p class="tfoot">ホーム画面に追加すると、アプリのように使えます。</p>
+</section>
+
+<div class="wrap" id="app" hidden>
+  <header>
+    <div class="brand">
+      <h1 id="tohome" title="トップページへ">Slang <span>Clip</span> Note <em class="beta">テスト版</em></h1>
+      <p>スラング動画ノート：動画で見て、単語をタップして、クイズで確かめる</p>
+    </div>
+    <div class="seg" role="group" aria-label="モード">
+      <button type="button" id="m-learn" aria-pressed="true">学ぶ</button>
+      <button type="button" id="m-quiz" aria-pressed="false">クイズ</button>
+    </div>
+  </header>
+
+  <section id="learn">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <nav class="chips" id="chips" aria-label="フレーズ"></nav>
+      <article class="card" id="card"><div id="stagebox"></div><div id="adminbox"></div><div class="body" id="cardbody"></div></article>
+    </div>
+  </section>
+
+  <section id="quiz" hidden>
+    <article class="card"><div class="body" id="qbody"></div></article>
+  </section>
+</div>
+
+<script>
+/* ---------- data: 10 phrases. video: path of a published MP4 (null until filmed). t: [start,end] seconds of each line in that video ---------- */
+const PHRASES = [
+ {en:"No cap", mean:"マジで、ウソじゃない", scene:"本当だと強調したい時",
+  nuance:"cap はスラングで「ウソ、盛った話」。No cap で「盛ってない、本当だよ」と強調する。逆に That's cap. は「それウソでしょ」。",
+  tip:"文末に付けるだけでOK。SNSでは帽子の絵文字で「ウソ」を表すこともある。",
+  video:"videos/no1-no-cap.mp4", solo:true, lines:[
+   {who:"A", en:"That movie was amazing.", ja:"あの映画、最高だった。", t:null},
+   {who:"A", en:"[[No cap]].", ja:"マジで（ウソじゃないよ）。", t:null}],
+  words:{"that":["形容詞","あの、その"],"movie":["名詞","映画"],"was":["動詞","〜だった（is の過去形）"],"amazing":["形容詞","すごい、最高の、驚くほど良い"],"no cap":["スラング","マジで、ウソじゃない（cap ＝ウソ、盛った話）"]},
+  examples:[
+   {en:"I studied for ten hours yesterday, [[no cap]].", ja:"昨日10時間も勉強したんだ、マジで。",
+    words:{"studied":["動詞","勉強した（study の過去形）"],"hours":["名詞","時間"],"yesterday":["副詞","昨日"]}},
+   {en:"[[No cap]], this is the best pizza in town.", ja:"ウソじゃなくて、ここが街で一番おいしいピザだよ。",
+    words:{"best":["形容詞","一番いい（the best ＝最高の）"],"pizza":["名詞","ピザ"],"town":["名詞","町、街"]}}]},
+ {en:"Spill the tea", mean:"噂話を教えて", scene:"友だちと噂話をする時",
+  nuance:"tea は「ゴシップ、内輪の情報」。お茶をこぼす＝秘密をしゃべる、というイメージ。",
+  tip:"What's the tea?（何か面白い話ある？）も同じ仲間の表現。",
+  video:"videos/no2-spill-the-tea.mp4", solo:true, lines:[
+   {who:"A", en:"{{It is time to}} [[spill the tea]].", ja:"さあ、ぶっちゃけ話をする時間だよ。", t:null},
+   {who:"A", en:"{{Don't}} tell anybody.", ja:"誰にも言わないでね。", t:null}],
+  words:{"it is time to":["熟語","〜する時間だ、そろそろ〜しよう"],"spill the tea":["スラング","噂話や内緒の話を打ち明ける（tea ＝ゴシップ）"],"don't":["短縮形","do not ＝〜しないで（命令文の否定）"],"tell":["動詞","言う、話す"],"anybody":["代名詞","誰にも（否定文で「誰にも〜ない」）"]},
+  examples:[
+   {en:"Okay, [[spill the tea]]. What did he say?", ja:"ねえ、早く教えて。彼なんて言ったの？",
+    words:{"okay":["間投詞","ねえ、よし"],"what":["代名詞","何を"],"say":["動詞","言う（did he say ＝彼は言ったか）"]}},
+   {en:"She [[spilled the tea]] about the new manager.", ja:"彼女、新しいマネージャーの裏話をぶっちゃけたんだよ。",
+    words:{"about":["前置詞","〜について"],"new":["形容詞","新しい"],"manager":["名詞","マネージャー、上司"]}},
+   {en:"{{Come on}}, don't be shy. [[Spill the tea]]!", ja:"ほら、恥ずかしがらないで。教えてよ！",
+    words:{"come on":["熟語","ほら、さあ（相手を促す）"],"don't":["短縮形","do not ＝〜しないで"],"shy":["形容詞","恥ずかしがりの、遠慮がちな"]}}]},
+ {en:"Lowkey", mean:"ちょっと、ひそかに、正直", scene:"控えめに本音を言う時",
+  nuance:"大声では言わないけど…という控えめな本音を表す。反対は highkey（めっちゃ、堂々と）。",
+  tip:"文のどこにでも入れやすい。Lowkey hungry.（ちょっとお腹すいた）のように短くも使える。",
+  video:"videos/no3-lowkey.mp4", solo:true, lines:[
+   {who:"A", en:"I {{feel like}} seeing a movie.", ja:"映画が観たい気分だな。", t:[1,2.8]},
+   {who:"A", en:"I [[lowkey]] {{want to}} skip class.", ja:"正直ちょっと授業をサボりたい。", t:[3.1,4.9]}],
+  words:{"feel like":["熟語","〜したい気分だ（feel like ＋ -ing）"],"seeing":["動詞","観ること（see の -ing 形。see a movie ＝映画を観る）"],"movie":["名詞","映画"],"want to":["熟語","〜したい。話し言葉では wanna（ワナ）と発音する"],"wanna":["話し言葉","want to の短縮形。I wanna skip class. ＝授業サボりたい"],"skip":["動詞","サボる、飛ばす"],"class":["名詞","授業"]},
+  examples:[
+   {en:"I'm [[lowkey]] tired today.", ja:"今日はちょっと疲れてるんだよね。",
+    words:{"tired":["形容詞","疲れた"],"today":["副詞","今日"]}},
+   {en:"This song is [[lowkey]] good.", ja:"この曲、正直けっこういいよ。",
+    words:{"song":["名詞","歌、曲"],"good":["形容詞","いい"]}},
+   {en:"I [[lowkey]] miss {{high school}}.", ja:"正直、高校時代がちょっと恋しい。",
+    words:{"miss":["動詞","恋しく思う"],"high school":["名詞","高校"]}}]},
+ {en:"It slaps", mean:"最高、めちゃくちゃいい", scene:"音楽や食べ物をほめる時",
+  nuance:"主に音楽や食べ物に使う。slap（平手打ち）されたような衝撃を受けるほど良い、という意味。",
+  tip:"This pizza slaps. のように主語を変えるだけで使える。",
+  video:"videos/no4-it-slaps.mp4", solo:true, lines:[
+   {who:"A", en:"I am starving.", ja:"お腹ペコペコ。", t:[2.1,3.6]},
+   {who:"A", en:"This pizza [[slaps]].", ja:"このピザ、めちゃくちゃうまい。", t:[3.65,5.3]}],
+  words:{"i":["代名詞","私"],"am":["動詞","〜である（be 動詞。I am ＝私は〜だ）"],"starving":["形容詞","お腹ペコペコの、飢えている（starve ＝飢える。I'm starving ＝死ぬほどお腹すいた、という大げさな言い方）"],"this":["形容詞","この"],"pizza":["名詞","ピザ"],"slaps":["スラング","最高、めちゃくちゃいい（slap の三人称単数。食べ物や音楽をほめる）"]},
+  examples:[
+   {en:"This pizza [[slaps]].", ja:"このピザ、めちゃくちゃうまい。",
+    words:{"pizza":["名詞","ピザ"]}},
+   {en:"Your new playlist [[slaps]]!", ja:"新しいプレイリスト、最高じゃん！",
+    words:{"your":["代名詞","あなたの"],"playlist":["名詞","プレイリスト（曲のリスト）"]}},
+   {en:"The bass in this track really [[slaps]].", ja:"この曲の低音、ほんと最高。",
+    words:{"bass":["名詞","低音、ベース"],"track":["名詞","曲、トラック"],"really":["副詞","本当に"]}}]},
+ {en:"I'm dead", mean:"ウケる、笑いすぎて死ぬ", scene:"面白い話に反応する時",
+  nuance:"本当に死ぬわけではなく、「面白すぎて死んだ」という誇張。チャットではドクロの絵文字だけでも同じ意味になる。",
+  tip:"I'm dying. や I can't. も「笑いが止まらない」の意味で使われる。",
+  video:null, lines:[
+   {who:"A", en:"My dog stole my sandwich on a {{video call}}.", ja:"オンライン会議中に犬にサンドイッチ盗まれた。", t:null},
+   {who:"B", en:"Stop, [[I'm dead]].", ja:"やめて、ウケる（笑）", t:null}],
+  words:{"dog":["名詞","犬"],"stole":["動詞","盗んだ（steal の過去形）"],"sandwich":["名詞","サンドイッチ"],"video call":["名詞","ビデオ通話、オンライン会議"],"stop":["動詞","やめて（笑いをこらえる時の一言）"]},
+  examples:[
+   {en:"You wore your shirt {{inside out}}? [[I'm dead]].", ja:"シャツ裏返しで着てたの？ ウケる。",
+    words:{"wore":["動詞","着ていた（wear の過去形）"],"shirt":["名詞","シャツ"],"inside out":["熟語","裏返しに"]}},
+   {en:"That meme had me [[dead]].", ja:"あのミーム、笑いすぎて死んだ。",
+    words:{"meme":["名詞","ミーム（ネットで広まるネタ）"],"had":["動詞","（had me 〜 ＝私を〜の状態にした）"]}},
+   {en:"Stop, [[I'm dying]]!", ja:"やめて、笑いが止まらない！",
+    words:{"stop":["動詞","やめて"]}}]},
+ {en:"Ghost", mean:"急に連絡を絶つ", scene:"恋愛・人間関係の話で",
+  nuance:"幽霊のように突然消えること。恋愛や友人関係のほか、採用選考などで返事が来ない時にも使う。",
+  tip:"動詞として使う。get ghosted（音信不通にされる）の形も多い。",
+  video:null, lines:[
+   {who:"A", en:"What happened with the guy from the app?", ja:"アプリで知り合った彼とはどうなったの？", t:null},
+   {who:"B", en:"He [[ghosted]] me after our second date.", ja:"2回目のデートの後、音信不通になった。", t:null}],
+  words:{"happened":["動詞","起きた（happen の過去形）"],"guy":["名詞","男の人、やつ"],"app":["名詞","アプリ"],"after":["前置詞","〜の後で"],"second":["形容詞","2回目の"],"date":["名詞","デート"]},
+  examples:[
+   {en:"She [[ghosted]] me after one text.", ja:"一回メッセージを送っただけで、彼女から音信不通になった。",
+    words:{"after":["前置詞","〜の後で"],"one":["形容詞","1つの"],"text":["名詞","（スマホの）メッセージ"]}},
+   {en:"Don't [[ghost]] me, okay?", ja:"急に連絡を絶たないでよね？",
+    words:{"don't":["短縮形","do not ＝〜しないで"],"okay":["間投詞","いい？、わかった？"]}},
+   {en:"I got [[ghosted]] by the company after the interview.", ja:"面接の後、その会社から連絡が来なくなった。",
+    words:{"got":["動詞","（get ＋過去分詞 ＝〜される）"],"company":["名詞","会社"],"interview":["名詞","面接"]}}]},
+ {en:"Salty", mean:"すねている、根に持っている", scene:"すねている人について",
+  nuance:"負けたり、からかわれたりして、ちょっとイラッとしている状態。本気の怒りより軽い。",
+  tip:"Don't be salty.（すねないでよ）と、からかう時にもよく使う。",
+  video:null, lines:[
+   {who:"A", en:"Why is Tom so quiet?", ja:"トム、なんであんなに静かなの？", t:null},
+   {who:"B", en:"He's still [[salty]] about losing the game.", ja:"試合に負けたこと、まだ根に持ってるんだよ。", t:null}],
+  words:{"quiet":["形容詞","静かな"],"still":["副詞","まだ"],"losing":["動詞","負けること（lose の -ing 形）"],"game":["名詞","試合"]},
+  examples:[
+   {en:"Why are you so [[salty]] today?", ja:"今日はなんでそんなにすねてるの？",
+    words:{"why":["副詞","なぜ"],"today":["副詞","今日"]}},
+   {en:"He got [[salty]] when I beat him at cards.", ja:"トランプで私が勝ったら、彼すねちゃった。",
+    words:{"got":["動詞","（get ＋形容詞 ＝〜になる）"],"beat":["動詞","負かす（過去形も beat）"],"cards":["名詞","トランプ"]}},
+   {en:"Don't be [[salty]], it's just a game.", ja:"すねないでよ、ただのゲームじゃん。",
+    words:{"don't":["短縮形","do not ＝〜しないで"],"just":["副詞","ただの"],"game":["名詞","ゲーム"]}}]},
+ {en:"Rent-free", mean:"頭から離れない", scene:"何かが頭から離れない時",
+  nuance:"家賃も払わずに頭の中に住みついている、という比喩。良い意味でも悪い意味でも使える。",
+  tip:"〇〇 lives rent-free in my head. が定番の形。",
+  video:null, lines:[
+   {who:"A", en:"That jingle lives [[rent-free]] in my head.", ja:"あのCMソング、頭から離れないんだけど。", t:null},
+   {who:"B", en:"Oh no, now it's in mine too.", ja:"やめて、私もそうなっちゃった。", t:null}],
+  words:{"jingle":["名詞","CMソング、短い宣伝の歌"],"lives":["動詞","住む（live の三人称単数）"],"head":["名詞","頭"],"mine":["代名詞","私のもの（ここでは my head）"],"too":["副詞","〜も"]},
+  examples:[
+   {en:"That joke is living [[rent-free]] in my head.", ja:"あのジョーク、ずっと頭から離れない。",
+    words:{"joke":["名詞","ジョーク、冗談"],"living":["動詞","住んでいる（live の -ing 形）"],"head":["名詞","頭"]}},
+   {en:"His smile lives [[rent-free]] in my mind.", ja:"彼の笑顔が頭から離れない。",
+    words:{"smile":["名詞","笑顔"],"mind":["名詞","心、頭の中"]}},
+   {en:"Sorry, I live [[rent-free]] in your head now.", ja:"ごめんね、もう私のことが頭から離れないでしょ。",
+    words:{"sorry":["形容詞","ごめん"],"now":["副詞","今では、もう"]}}]},
+ {en:"Hits different", mean:"格別に感じる、妙に刺さる", scene:"いつもより特別に感じた時",
+  nuance:"同じものでも、状況やタイミングによって特別に感じる時に使う。",
+  tip:"文法的には hits differently だが、スラングでは different のまま使うのが普通。",
+  video:null, lines:[
+   {who:"A", en:"Coffee on a cold morning is so good.", ja:"寒い朝のコーヒーって、すごくおいしい。", t:null},
+   {who:"B", en:"Right? It just [[hits different]].", ja:"だよね。なんか格別なんだよ。", t:null}],
+  words:{"coffee":["名詞","コーヒー"],"cold":["形容詞","寒い、冷たい"],"morning":["名詞","朝"],"right":["形容詞","正しい（Right? ＝だよね？）"],"just":["副詞","とにかく、なんか"]},
+  examples:[
+   {en:"Music [[hits different]] {{at night}}.", ja:"夜に聴く音楽って、格別だよね。",
+    words:{"music":["名詞","音楽"],"at night":["熟語","夜に"]}},
+   {en:"Mom's cooking [[hits different]] after a long trip.", ja:"長旅のあとの母の料理は格別。",
+    words:{"mom's":["名詞","お母さんの"],"cooking":["名詞","料理"],"trip":["名詞","旅行"]}},
+   {en:"Summer [[hits different]] {{this year}}.", ja:"今年の夏は、なんか特別に感じる。",
+    words:{"summer":["名詞","夏"],"this year":["熟語","今年"]}}]},
+ {en:"Touch grass", mean:"ネットから離れて外に出なよ", scene:"友だちを軽くからかう時",
+  nuance:"「草に触れてこい」＝ネットやゲームにのめり込みすぎた人への、からかい半分のひと言。",
+  tip:"相手を軽く茶化す表現。親しくない人に言うと失礼になるので注意。",
+  video:null, lines:[
+   {who:"A", en:"I've been gaming for 12 hours straight.", ja:"12時間ぶっ通しでゲームしてる。", t:null},
+   {who:"B", en:"Dude, go [[touch grass]].", ja:"おい、ちょっとは外に出ろよ。", t:null}],
+  words:{"gaming":["動詞","ゲームをする（game の -ing 形）"],"hours":["名詞","時間"],"straight":["副詞","ぶっ通しで、連続で"],"dude":["名詞","おい、お前（親しい呼びかけ）"]},
+  examples:[
+   {en:"You've been online {{all day}}. [[Touch grass]].", ja:"一日中ネットしてるじゃん。外に出なよ。",
+    words:{"online":["副詞","ネットに、オンラインで"],"all day":["熟語","一日中"]}},
+   {en:"I need to [[touch grass]] this weekend.", ja:"今週末は、ネットから離れて外に出なきゃ。",
+    words:{"need":["動詞","〜する必要がある"],"weekend":["名詞","週末"]}},
+   {en:"Stop arguing in the comments and [[touch grass]].", ja:"コメント欄で言い争ってないで、外の空気を吸ってきなよ。",
+    words:{"arguing":["動詞","言い争う（argue の -ing 形）"],"comments":["名詞","コメント欄"]}}]}
+];
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const key = t => t.toLowerCase().replace(/[^a-z'\- ]/g, "").replace(/^['-]+|['-]+$/g, "").trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const plain = s => s.replace(/\[\[|\]\]|\{\{|\}\}/g, "");
+const blanked = s => s.replace(/\[\[.+?\]\]/, "＿＿＿＿").replace(/\{\{|\}\}/g, "");
+
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem("slang-clip-note") || "{}") || {}; } catch (e) { saved = {}; }
+function save() { try { localStorage.setItem("slang-clip-note", JSON.stringify(saved)); } catch (e) {} }
+
+let cur = Number.isInteger(saved.cur) && saved.cur >= 0 && saved.cur < PHRASES.length ? saved.cur : 0;
+const localVideo = {};   // phrase index -> blob URL picked on this device (not saved)
+const clips = {};        // phrase index -> {asset, name, lines:{"0":{s,e}}} kept in db "clips/p1".."p10"
+let DB = null, ASSETS = null;          // runtime capabilities (null = not available in this view)
+let editTiming = false, confirmRemove = false, busy = "";
+const revealed = new Set();            // dialogue lines whose translation is shown
+const MAX_MB = 20;
+
+const videoOf = i => localVideo[i] || (clips[i] && clips[i].asset ? "/_blob/" + clips[i].asset : PHRASES[i].video);
+const segOf = (i, j) => {
+  const c = clips[i], l = c && c.lines && c.lines[String(j)];
+  if (l && typeof l.s === "number" && typeof l.e === "number" && l.e > l.s) return [l.s, l.e];
+  return PHRASES[i].lines[j].t || null;
+};
+const fmt = x => typeof x === "number" ? x.toFixed(1) + " 秒" : "未設定";
+const canManage = () => !!(ASSETS && DB);
+
+/* turn a dialogue line into HTML with tappable words */
+function lineHTML(p, en) {
+  return en.split(/(\[\[.+?\]\]|\{\{.+?\}\})/).map(seg => {
+    if (seg.startsWith("[[")) return `<button type="button" class="w slang">${esc(seg.slice(2, -2))}</button>`;
+    if (seg.startsWith("{{")) { const t = seg.slice(2, -2), k = key(t); return p.words[k] ? `<button type="button" class="w" data-k="${esc(k)}">${esc(t)}</button>` : esc(t); }
+    return seg.split(/(\s+)/).map(tok => {
+      const m = tok.match(/^([^A-Za-z']*)([A-Za-z'\-]*)(.*)$/); const k = m ? key(m[2]) : "";
+      return k && p.words[k] ? esc(m[1]) + `<button type="button" class="w" data-k="${esc(k)}">${esc(m[2])}</button>` + esc(m[3]) : esc(tok);
+    }).join("");
+  }).join("");
+}
+
+/* ---------- learn mode ---------- */
+function renderChips() {
+  $("chips").innerHTML = PHRASES.map((p, i) =>
+    `<button type="button" class="chip" data-i="${i}" aria-pressed="${i === cur}"><i>${i + 1}</i>${esc(p.en)}${videoOf(i) ? `<span class="dot" title="動画あり"></span>` : ""}</button>`).join("");
+}
+function stageHTML(i) {
+  const p = PHRASES[i], v = videoOf(i);
+  if (v) return `<div class="stage"><video id="vid" src="${esc(v)}" controls playsinline preload="metadata"></video></div>`;
+  return `<div class="stage"><div class="empty">
+      <span class="lab">VIDEO ・ まだ動画がありません</span>
+      <h3>この会話を2人で演じて撮影しましょう</h3>
+      <ol class="script">${p.lines.map(l => `<li><b>${l.who}</b>${esc(plain(l.en))}</li>`).join("")}</ol>
+      ${canManage()
+        ? `<p class="note">撮影したMP4は、すぐ下の「MP4動画を登録する」から追加できます。</p>`
+        : `<label class="pick">手元の動画で試す<input type="file" id="pick" accept="video/*"></label>
+           <p class="note">選んだ動画はこの端末で一時的に再生するだけで、保存や送信はされません。</p>`}
+    </div></div>`;
+}
+function renderStage() { $("stagebox").innerHTML = stageHTML(cur); }
+function renderAdmin() {
+  const box = $("adminbox");
+  if (!canManage()) { box.innerHTML = ""; return; }
+  const c = clips[cur];
+  box.innerHTML = `<div class="admin">
+    <span class="tag">動画の管理 ・ 編集できる人だけに表示されます</span>
+    <div class="row">
+      <label class="btn main">${c ? "動画を差し替える" : "MP4動画を登録する"}<input type="file" id="up" accept="video/mp4,video/webm,.mp4,.webm" ${busy ? "disabled" : ""}></label>
+      ${c ? `<button type="button" class="btn" id="timing">${editTiming ? "区切りの設定を閉じる" : "行ごとの区切りを設定"}</button>
+             <button type="button" class="btn ${confirmRemove ? "danger" : ""}" id="rm">${confirmRemove ? "外す（元に戻せません）" : "動画を外す"}</button>
+             ${confirmRemove ? `<button type="button" class="btn" id="rmno">やめる</button>` : ""}` : ""}
+    </div>
+    <p class="status" id="status" aria-live="polite">${esc(busy || (c ? `登録済み：${c.name || "動画"}` : `MP4 または WebM、1本 ${MAX_MB}MB まで。登録した動画は、このアプリを開いた人全員に表示されます。`))}</p>
+  </div>`;
+}
+function renderBody() {
+  const p = PHRASES[cur], hasV = !!videoOf(cur), timing = editTiming && canManage() && clips[cur];
+  const chat = p.lines.map((l, j) => {
+    const seg = segOf(cur, j), raw = (clips[cur] && clips[cur].lines && clips[cur].lines[String(j)]) || {};
+    return `
+    <div class="line ${l.who === "B" ? "b" : ""}">
+      <span class="who" aria-hidden="true">${l.who}</span>
+      <div class="bub">
+        <p class="en">${lineHTML(p, l.en)}</p>
+        ${hasV ? `<p class="jav">${esc(l.ja)}</p>` : `<p class="ja ${revealed.has(j) ? "" : "hide"}" data-j="${j}" title="タップで日本語訳を表示">${esc(l.ja)}</p>`}
+        ${hasV && seg ? `<div class="play"><button type="button" data-j="${j}">▶ この行</button><button type="button" data-j="${j}" data-slow="1">▶ ゆっくり</button></div>` : ""}
+        ${timing ? `<div class="timing">
+            <span>開始 <b>${fmt(raw.s)}</b></span><button type="button" data-set="s" data-j="${j}">今の位置</button>
+            <span>終了 <b>${fmt(raw.e)}</b></span><button type="button" data-set="e" data-j="${j}">今の位置</button>
+          </div>` : ""}
+      </div>
+    </div>`;
+  }).join("");
+  const rows = Object.entries(p.words).map(([w, [pos, m]]) => `<tr><td>${esc(w)}</td><td class="pos">${esc(pos)}</td><td>${esc(m)}</td></tr>`).join("");
+  const head = `
+      <div class="phrase">
+        <span class="tag">PHRASE ${cur + 1} / ${PHRASES.length}</span>
+        <h2>${esc(p.en)}</h2>
+        <span class="mean">${esc(p.mean)}</span>
+        <span class="scene">使う場面：${esc(p.scene)}</span>
+      </div>
+      <p class="nuance">${esc(p.nuance)}</p>`;
+  const talk = `
+      <div style="display:flex;flex-direction:column;gap:10px" data-pop>
+        <span class="tag">${hasV ? "動画のセリフと日本語訳 ・ 単語をタップすると意味が出ます" : "会話例 ・ 単語をタップすると意味が出ます"}</span>
+        ${timing ? `<p class="help">動画を再生して、各行の話し始めで「開始」、話し終わりで「終了」の「今の位置」を押します。一時停止してから押すと正確に決められます。押すたびに自動で保存されます。</p>` : ""}
+        <div class="chat ${p.solo && hasV ? "solo" : ""}">${chat}</div>
+        <div class="pop" id="pop" aria-live="polite">${hasV ? "黄色のフレーズや、点線の単語をタップすると、ここに意味が出ます。" : "黄色のフレーズや、点線の単語をタップしてみましょう。日本語訳はぼかしをタップすると表示されます。"}</div>
+        <div class="row">
+          ${hasV ? `<button type="button" class="btn" id="slow">▶ 全体をゆっくり再生</button>` : `<button type="button" class="btn" id="showja">日本語訳をすべて表示</button>`}
+        </div>
+      </div>`;
+  const words = `<div class="words"><span class="tag">${hasV ? "単語の意味" : "単語リスト"}</span><table>${rows}</table></div>`;
+  const exs = (p.examples || []).length ? `
+      <div class="examples" data-pop>
+        <span class="tag">ほかの例文 ・ 単語をタップすると意味が出ます</span>
+        ${p.examples.map(x => `<div class="ex">
+          <p class="en">${lineHTML({ words: Object.assign({}, p.words, x.words || {}) }, x.en)}</p>
+          <p class="jav">${esc(x.ja)}</p>
+          ${x.words ? `<p class="exw">${Object.entries(x.words).map(([w, [, m]]) => `<span><b>${esc(w)}</b>${esc(m)}</span>`).join("")}</p>` : ""}
+        </div>`).join("")}
+        <div class="pop" aria-live="polite">例文の単語をタップすると、ここに意味が出ます。</div>
+      </div>` : "";
+  const tail = `
+      <div class="tip"><span class="tag">使い方のコツ</span><p>${esc(p.tip)}</p></div>
+      <div class="nav">
+        <button type="button" class="btn" id="prev" ${cur === 0 ? "disabled" : ""}>← 前のフレーズ</button>
+        <button type="button" class="btn" id="next" ${cur === PHRASES.length - 1 ? "disabled" : ""}>次のフレーズ →</button>
+      </div>`;
+  /* with a video, the transcript, its translation and the word meanings sit right under the video */
+  $("cardbody").innerHTML = hasV ? talk + words + exs + head + tail : head + talk + words + exs + tail;
+}
+function renderCard() { renderStage(); renderAdmin(); renderBody(); }
+function go(i) {
+  cur = i; saved.cur = i; save();
+  editTiming = false; confirmRemove = false; revealed.clear();
+  renderChips(); renderCard();
+}
+function setStatus(msg) { const el = $("status"); if (el) el.textContent = msg; }
+
+/* ---------- saving videos (assets + db) ---------- */
+function errText(e) {
+  switch (e && e.code) {
+    case "too_large": return `ファイルが ${MAX_MB}MB を超えています。短く切るか、画質を下げて書き出してください。`;
+    case "unsupported_type": return "この形式は保存できません。MP4 か WebM の動画を選んでください。";
+    case "quota_or_state": return "保存容量がいっぱいです。使っていない動画を外してから、もう一度試してください。";
+    case "rate_limited": case "resource_exhausted": return "操作が続いたため一時的に止まっています。少し待ってからもう一度試してください。";
+    case "upstream_auth": return "ページを再読み込みするか、サインインし直してから試してください。";
+    case "invalid_argument": return "保存できませんでした。動画を登録・変更できるのは、このアプリを編集できる人だけです。";
+    case "not_granted": case "capability_disabled": case "capability_removed": case "revoked": return "この画面では動画を保存できません。";
+    default: return "保存できませんでした。通信状態を確かめて、もう一度試してください。";
+  }
+}
+function videoType(file) {
+  const n = file.name.toLowerCase();
+  if (file.type === "video/mp4" || file.type === "video/webm") return file.type;
+  if (n.endsWith(".mp4") || n.endsWith(".m4v")) return "video/mp4";
+  if (n.endsWith(".webm")) return "video/webm";
+  return "";
+}
+async function uploadClip(file) {
+  const type = videoType(file);
+  if (!type) { setStatus("この形式は使えません。MP4 か WebM の動画を選んでください。iPhone の MOV は、変換アプリなどで MP4 にすると使えます。"); return; }
+  if (file.size > MAX_MB * 1024 * 1024) { setStatus(`ファイルが ${(file.size / 1048576).toFixed(1)}MB あり、上限の ${MAX_MB}MB を超えています。短く切るか、画質を下げて書き出してください。`); return; }
+  const i = cur, old = clips[i] && clips[i].asset;
+  busy = `アップロード中…（${(file.size / 1048576).toFixed(1)}MB）`; renderAdmin();
+  try {
+    const r = await ASSETS.upload(file, { type });
+    await DB.doc("clips/p" + (i + 1)).set({ asset: r.id, name: file.name, size: r.sizeBytes, lines: {} });
+    clips[i] = { asset: r.id, name: file.name, lines: {} };
+    if (old && old !== r.id) { try { await ASSETS.delete(old); } catch (e) {} }
+    busy = ""; editTiming = false; confirmRemove = false;
+    if (i === cur) { renderStage(); renderAdmin(); renderBody(); setStatus(`登録しました：${file.name}。次は「行ごとの区切りを設定」で、各行の再生区間を決めましょう。`); }
+    renderChips();
+  } catch (e) {
+    busy = ""; renderAdmin(); setStatus(errText(e));
+  }
+}
+async function removeClip() {
+  const i = cur, c = clips[i]; if (!c) return;
+  busy = "動画を外しています…"; renderAdmin();
+  try {
+    await DB.doc("clips/p" + (i + 1)).delete();
+    delete clips[i];
+    if (c.asset) { try { await ASSETS.delete(c.asset); } catch (e) {} }
+    busy = ""; confirmRemove = false; editTiming = false;
+    if (i === cur) { renderCard(); setStatus("動画を外しました。"); }
+    renderChips();
+  } catch (e) { busy = ""; renderAdmin(); setStatus(errText(e)); }
+}
+async function setTime(j, which) {
+  const v = $("vid"), c = clips[cur]; if (!v || !c) return;
+  const x = Math.round(v.currentTime * 10) / 10, lines = Object.assign({}, c.lines || {});
+  lines[String(j)] = Object.assign({}, lines[String(j)] || {}, { [which]: x });
+  clips[cur] = Object.assign({}, c, { lines });
+  renderBody();
+  try { await DB.doc("clips/p" + (cur + 1)).update({ lines: { [String(j)]: { [which]: x } } }); }
+  catch (e) { setStatus(errText(e)); }
+}
+
+let stopAt = null;
+function playSeg(t0, t1, slow) {
+  const v = $("vid"); if (!v) return;
+  v.playbackRate = slow ? 0.6 : 1; v.currentTime = t0; stopAt = t1; v.play().catch(() => {});
+}
+document.addEventListener("timeupdate", e => {
+  const v = e.target; if (v.id === "vid" && stopAt != null && v.currentTime >= stopAt) { v.pause(); stopAt = null; }
+}, true);
+
+$("chips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) go(+b.dataset.i); });
+$("card").addEventListener("change", e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  if (e.target.id === "pick") { localVideo[cur] = URL.createObjectURL(f); renderStage(); renderBody(); }
+  if (e.target.id === "up" && canManage()) uploadClip(f);
+  e.target.value = "";
+});
+$("card").addEventListener("click", e => {
+  const p = PHRASES[cur], t = e.target;
+  const w = t.closest(".w");
+  if (w) {
+    document.querySelectorAll(".w.on").forEach(x => x.classList.remove("on")); w.classList.add("on");
+    const box = w.closest("[data-pop]"), pop = (box && box.querySelector(".pop")) || $("pop");
+    const all = Object.assign({}, p.words, ...(p.examples || []).map(x => x.words || {}));
+    if (w.classList.contains("slang")) pop.innerHTML = `<b>${esc(p.en)}</b>スラング：${esc(p.mean)}`;
+    else if (all[w.dataset.k]) { const [pos, m] = all[w.dataset.k]; pop.innerHTML = `<b>${esc(w.dataset.k)}</b>（${esc(pos)}）${esc(m)}`; }
+    return;
+  }
+  const pb = t.closest(".play button");
+  if (pb) { const s = segOf(cur, +pb.dataset.j); if (s) playSeg(s[0], s[1], !!pb.dataset.slow); return; }
+  const sb = t.closest("[data-set]");
+  if (sb) { setTime(+sb.dataset.j, sb.dataset.set); return; }
+  const ja = t.closest(".ja");
+  if (ja) { const j = +ja.dataset.j; if (revealed.has(j)) revealed.delete(j); else revealed.add(j); ja.classList.toggle("hide"); return; }
+  if (t.id === "showja") { p.lines.forEach((_, j) => revealed.add(j)); document.querySelectorAll("#card .ja").forEach(x => x.classList.remove("hide")); }
+  if (t.id === "slow") playSeg(0, null, true);
+  if (t.id === "timing") { editTiming = !editTiming; renderAdmin(); renderBody(); }
+  if (t.id === "rm") { if (confirmRemove) removeClip(); else { confirmRemove = true; renderAdmin(); } }
+  if (t.id === "rmno") { confirmRemove = false; renderAdmin(); }
+  if (t.id === "prev" && cur > 0) go(cur - 1);
+  if (t.id === "next" && cur < PHRASES.length - 1) go(cur + 1);
+});
+
+/* connect the runtime capabilities; the page works without them */
+(async () => {
+  const use = window.claude && window.claude.use;
+  if (!use) return;
+  try { DB = await window.claude.use("db"); } catch (e) { DB = null; }
+  try { ASSETS = await window.claude.use("assets"); } catch (e) { ASSETS = null; }
+  if (DB) {
+    DB.collection("clips").onSnapshot(snap => {
+      const before = clips[cur] && clips[cur].asset;
+      const next = {};
+      snap.docs.forEach(d => {
+        const m = /^p(\d+)$/.exec(d.id), b = d.data();
+        if (m && b && typeof b.asset === "string") next[+m[1] - 1] = { asset: b.asset, name: b.name, lines: b.lines || {} };
+      });
+      Object.keys(clips).forEach(k => delete clips[k]);
+      Object.assign(clips, next);
+      if ((clips[cur] && clips[cur].asset) !== before && !localVideo[cur]) renderStage();
+      if (!busy) renderAdmin();
+      renderBody(); renderChips();
+    }, () => {});
+  }
+  renderStage(); renderAdmin();
+})();
+
+/* ---------- quiz mode ---------- */
+let Q = null;
+function newQuiz() {
+  const qs = shuffle(PHRASES.map((_, i) => i)).map(i => {
+    const type = Math.random() < 0.5 ? "meaning" : "fill";
+    const others = shuffle(PHRASES.map((_, k) => k).filter(k => k !== i)).slice(0, 3);
+    return { i, type, opts: shuffle([i, ...others]) };
+  });
+  Q = { qs, n: 0, score: 0, picked: null, missed: [] };
+  renderQuiz();
+}
+function renderQuiz() {
+  const box = $("qbody");
+  if (!Q) { newQuiz(); return; }
+  if (Q.n >= Q.qs.length) return renderResult();
+  const q = Q.qs[Q.n], p = PHRASES[q.i], done = Q.picked !== null;
+  const slangLine = p.lines.find(l => l.en.includes("[["));
+  const prompt = q.type === "meaning"
+    ? `<p class="qtext">このスラングの意味は？</p><p class="qbig">${esc(p.en)}</p>`
+    : `<p class="qtext">空欄に入るフレーズは？</p>
+       <div class="line ${slangLine.who === "B" ? "b" : ""}" style="max-width:100%"><span class="who">${slangLine.who}</span>
+       <div class="bub"><p class="en">${esc(blanked(slangLine.en))}</p><p class="ja">${esc(slangLine.ja)}</p></div></div>`;
+  const opts = q.opts.map(k => {
+    let cls = "opt" + (q.type === "fill" ? " en" : "");
+    if (done && k === q.i) cls += " right"; else if (done && k === Q.picked) cls += " wrong";
+    return `<button type="button" class="${cls}" data-k="${k}" ${done ? "disabled" : ""}>${esc(q.type === "fill" ? PHRASES[k].en : PHRASES[k].mean)}</button>`;
+  }).join("");
+  const v = videoOf(q.i);
+  box.innerHTML = `
+    <div class="qhead"><span class="tag">QUESTION ${Q.n + 1} / ${Q.qs.length}</span><div class="bar"><span style="width:${Q.n / Q.qs.length * 100}%"></span></div><span class="tag">正解 ${Q.score}</span></div>
+    ${v ? `<div class="stage" style="border-radius:12px;overflow:hidden"><video src="${esc(v)}" controls playsinline preload="metadata"></video></div>` : ""}
+    ${prompt}
+    <div class="opts">${opts}</div>
+    ${done ? `<div class="fb">${Q.picked === q.i ? `<strong class="ok">正解！</strong>` : `<strong class="ng">おしい！</strong> 正解は <b>${esc(p.en)}</b>`}
+      <br>${esc(p.en)} ＝ ${esc(p.mean)}。${esc(p.nuance)}</div>
+      <div class="row"><button type="button" class="btn main" id="qnext">${Q.n + 1 < Q.qs.length ? "次の問題へ" : "結果を見る"}</button></div>` : ""}`;
+}
+function renderResult() {
+  const best = Math.max(saved.best || 0, Q.score); saved.best = best; save();
+  const miss = Q.missed.map(i => `<li><span>${esc(PHRASES[i].en)}</span><button type="button" class="btn" data-learn="${i}">このフレーズを学ぶ</button></li>`).join("");
+  $("qbody").innerHTML = `<div class="result">
+    <span class="tag">RESULT</span>
+    <div class="score">${Q.score}<small> / ${Q.qs.length}</small></div>
+    <p style="margin:0">${Q.score === Q.qs.length ? "全問正解！ 10フレーズすべて身についています。" : "間違えたフレーズを見直して、もう一度挑戦してみましょう。"}　これまでのベスト：${best} 問</p>
+    ${miss ? `<span class="tag">見直したいフレーズ</span><ul class="miss">${miss}</ul>` : ""}
+    <button type="button" class="btn main" id="qagain">もう一度挑戦する</button></div>`;
+}
+$("qbody").addEventListener("click", e => {
+  const t = e.target, o = t.closest(".opt");
+  if (o && Q.picked === null) {
+    const q = Q.qs[Q.n]; Q.picked = +o.dataset.k;
+    if (Q.picked === q.i) Q.score++; else Q.missed.push(q.i);
+    renderQuiz(); return;
+  }
+  if (t.id === "qnext") { Q.n++; Q.picked = null; renderQuiz(); }
+  if (t.id === "qagain") newQuiz();
+  if (t.dataset.learn) { setMode("learn"); go(+t.dataset.learn); }
+});
+
+/* ---------- mode switch ---------- */
+function setMode(m) {
+  $("learn").hidden = m !== "learn"; $("quiz").hidden = m !== "quiz";
+  $("m-learn").setAttribute("aria-pressed", m === "learn"); $("m-quiz").setAttribute("aria-pressed", m === "quiz");
+  saved.mode = m; save();
+  if (m === "quiz") renderQuiz();
+}
+$("m-learn").addEventListener("click", () => setMode("learn"));
+$("m-quiz").addEventListener("click", () => setMode("quiz"));
+
+renderChips(); renderCard();
+setMode(saved.mode === "quiz" ? "quiz" : "learn");
+
+/* ---------- top page ---------- */
+const withVideo = PHRASES.map((p, i) => p.video ? i : -1).filter(i => i >= 0);
+$("t-np").textContent = PHRASES.length; $("t-nv").textContent = withVideo.length;
+const chipsHTML = PHRASES.map((p, i) => `<button type="button" class="tk ${p.video ? "v" : ""}" data-i="${i}"><i>${i + 1}</i><b>${esc(p.en)}</b><small>${esc(p.mean)}</small></button>`).join("");
+$("t-track").innerHTML = chipsHTML + chipsHTML.replace(/<button /g, '<button tabindex="-1" aria-hidden="true" ');
+const BG_PHRASE = 1;   /* background clip on the top page: No.2 Spill the tea */
+function nextBg() {
+  const v = $("bgv"); if (!PHRASES[BG_PHRASE].video || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  v.loop = true; v.src = PHRASES[BG_PHRASE].video; v.play().catch(() => {});
+}
+function showTop(on) {
+  $("top").hidden = !on; $("app").hidden = on;
+  const v = $("bgv");
+  if (on) { if (!v.src) nextBg(); else v.play().catch(() => {}); } else v.pause();
+  scrollTo(0, 0);
+}
+$("t-start").addEventListener("click", () => { setMode("learn"); showTop(false); });
+$("t-quiz").addEventListener("click", () => { setMode("quiz"); newQuiz(); showTop(false); });
+$("t-track").addEventListener("click", e => { const b = e.target.closest(".tk"); if (b) { setMode("learn"); go(+b.dataset.i); showTop(false); } });
+$("tohome").addEventListener("click", () => showTop(true));
+showTop(true);
+</script>
+
+
+
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body></html>
