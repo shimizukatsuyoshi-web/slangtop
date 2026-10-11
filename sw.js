@@ -1,11 +1,11 @@
 /* Slang Clip Note service worker: keeps the app and its videos on the device so it opens offline.
    Bump VERSION whenever any file changes so phones pick up the new copy. */
-const VERSION = "v4";
+const VERSION = "v5";
 const CACHE = "slang-clip-note-" + VERSION;
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
-  "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png",
-  "videos/no1-no-cap.mp4", "videos/no2-spill-the-tea.mp4", "videos/no3-lowkey.mp4", "videos/no4-it-slaps.mp4"
+  "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png",
+  "no1-no-cap.mp4", "no2-spill-the-tea.mp4", "no3-lowkey.mp4", "no4-it-slaps.mp4"
 ];
 
 self.addEventListener("install", e => {
